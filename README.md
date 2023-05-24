@@ -3,6 +3,14 @@ CSV Parser in JavaScript + CLI
 
 ## 1. Introduction
 
+### 1.1. What is CSV?
+
+CSV is an acronym for Comma-Separated Values. The comma-separated values is the columns, while the lines is the row, so it's a very open structured data format that any program including Excel can read.
+
+If the value would contain a comma, we must enclose the value between two quotation marks (like this: ``A,"A,B",C``). To escape the quotation mark, use two adjacent quotation marks (``A,"B""b""B",C`` will be parsed into ``[['A', 'B"b"B', 'C']]``).
+
+### 1.2. About this Library
+
 This is a CSV parser and stringifier library, with plus features:
 1. Two-dimensional array to HTML table conversion function
 2. Command-line interface for Node.js and Windows Script Host
