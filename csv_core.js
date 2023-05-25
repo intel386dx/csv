@@ -1,3 +1,30 @@
+/*
+ * CSV Parser in JavaScript
+ * Licensed under the MIT License
+ *
+ * Copyright (c) 2023 Hilman Ahwas A.
+ *
+ * Permission is hereby granted, free of charge, to any person ob-
+ * taining a copy  of this  software  and associated documentation 
+ * files (the "Software"), to deal in the Software without restri-
+ * ction, including  without limitation  the rights to  use, copy, 
+ * modify, merge, publish, distribute, sublicense, and/or sell co-
+ * pies of the  Software, and to permit persons to  whom the Soft-
+ * ware  is furnished to  do so, subject  to the following  condi-
+ * tions:
+ * 
+ * The above copyright notice and this permission notice shall be 
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+ * OF MERCHANTABILITY, FITNESS  FOR A PARTICULAR  PURPOSE AND NON-
+ * INFRINGEMENT. IN NO  EVENT SHALL THE AUTHORS  OR COPYRIGHT HOL-
+ * DERS BE LIABLE FOR ANY CLAIM,  DAMAGES OR OTHER LIABILITY, WHE-
+ * THER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+ * OUT OF OR IN  CONNECTION WITH THE SOFTWARE OR  THE USE OR OTHER 
+ * DEALINGS IN THE SOFTWARE.
+ */
 // The global CSV object containing methods for converting CSV to multi-dimensional array and vice versa
 // Has been successfully tested on Windows Script Host
 var CSV = {
@@ -20,7 +47,7 @@ var CSV = {
                         } else {
                             withinQuotes = !withinQuotes;
                         };
-                    } else if (char === "," && !withinQuotes) {
+                    } else if ((char === "," || char === ";") && !withinQuotes) {
                         values.push(currentValue);
                         currentValue = "";
                     } else {
