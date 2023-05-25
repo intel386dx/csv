@@ -1,0 +1,45 @@
+name: Minify JavaScript
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check it out.
+        uses: actions/checkout@v2
+
+      - name: Alright, let's get started.
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Let me grab a few things first.
+        run: npm install -g uglify-js
+
+      - name: Let's make it smaller
+        run: uglifyjs csv.js -o csv.min.js
+
+      - name: Let's see the before result.
+        run: node csv.js
+
+      - name: Then the after result.
+        run: node csv.min.js
+        
+      - name: What about on WSH?
+        run: cscript csv.js
+
+      - name: And the minified file?
+        run: cscript csv.min.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add .
+          git commit -m 'Minify css.js by CI'
+          git push
