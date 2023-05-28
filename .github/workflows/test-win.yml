@@ -1,0 +1,43 @@
+name: Test JavaScript on Windows
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check it out.
+        uses: actions/checkout@v2
+
+      - name: Alright, let's get started.
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Let's test the unminified version.
+        run: node csv.js
+
+      - name: Let's test the minified version.
+        run: node csv.min.js
+
+      - name: Let's test the unminified, core version.
+        run: node csv_core.js
+
+      - name: Let's test the minified, core version.
+        run: node csv_core.min.js
+
+      - name: Let's test the unminified version with WSH.
+        run: cscript csv.js
+
+      - name: Let's test the minified version with WSH.
+        run: cscript csv.min.js
+
+      - name: Let's test the unminified, core version with WSH.
+        run: cscript csv_core.js
+
+      - name: Let's test the minified, core version with WSH.
+        run: cscript csv_core.min.js

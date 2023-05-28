@@ -1,4 +1,4 @@
-name: Minify JavaScript
+name: Test & Minify JavaScript on Ubuntu
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check it out.
@@ -29,17 +29,13 @@ jobs:
 
       - name: Then the after result.
         run: node csv.min.js
-        
-      - name: What about on WSH?
-        run: cscript csv.js
-
-      - name: And the minified file?
-        run: cscript csv.min.js
 
       - name: Commit and push changes
         run: |
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
+          git config --global user.name 'intel386dx'
+          git config --global user.email 'hilmanahwaa@gmail.com'
           git add .
           git commit -m 'Minify css.js by CI'
           git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
