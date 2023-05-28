@@ -41,11 +41,11 @@ if (!CSV) var CSV = {};
                 if (separatorSettingRegex.test(parsedCSVByLine[0])) {
                     separator = parsedCSVByLine[0].match(separatorSettingRegex)[1];
                     explicitSeparator = true;
-                    console.log("New Delimiter: " + separator);
                 } else {
                     explicitSeparator = false;
                 };
                 for (h = 0; h < parsedCSVByLine.length; h = h + 1) {
+                    if (separatorSettingRegex.test(parsedCSVByLine[0])) h = h + 1;
                     line = parsedCSVByLine[h].split("");
                     values = [];
                     currentValue = "";
@@ -56,14 +56,16 @@ if (!CSV) var CSV = {};
                             if (line[i + 1] == "\"" && withinQuotes) {
                                 currentValue = currentValue + "\"";
                                 i = i + 1;
-                            } else if (((!explicitSeparator && (line[i + 1] == "," ^ line[i + 1] == ";")) || line[i + 1] == separator) ^ ((!explicitSeparator && (line[i - 1] == "," ^ line[i - 1] == ";")) || line[i - 1] == separator)) withinQuotes = !withinQuotes;
+                            } else if (((!explicitSeparator && (line[i + 1] == "," ^ line[i + 1] == ";")) ^ line[i + 1] == separator) ^ ((!explicitSeparator && (line[i - 1] == "," ^ line[i - 1] == ";")) ^ line[i - 1] == separator)) withinQuotes = !withinQuotes;
                               else if (!withinQuotes) currentValue = currentValue + "\"";
-                        } else if (((!explicitSeparator && (char == "," ^ char == ";")) || char == separator)) {
-                            if (withinQuotes) {
-                                currentValue = currentValue + (explicitSeparator? separator : "");
-                            } else {
-                                values.push(currentValue);
-                                currentValue = "";
+                        } else if ((!explicitSeparator && (char == "," ^ char == ";")) ^ char == separator) {
+                            if (withinQuotes) currentValue = currentValue + (explicitSeparator? separator : "");
+                            else {
+                                if ((!explicitSeparator && (char != "," ^ char != ";")) ^ char != separator) currentValue = currentValue + char;
+                                else {
+                                    values.push(currentValue);
+                                    currentValue = "";
+                                };
                             };
                         } else currentValue = currentValue + char;
                     };
