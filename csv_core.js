@@ -31,19 +31,20 @@ if (!CSV) var CSV = {};
 (function() {
     CSV = {
         // Pass your CSV data as the first argument
-        parse: function(csv) {
+        parse: function(csv, delim) {
             if (typeof csv != "undefined") {
                 parsedCSVByLine = csv.toString().replace("\r\n", "\n").split("\n");
                 parsedCSV = [];
                 separator = null;
                 explicitSeparator = false;
                 separatorSettingRegex = new RegExp("^Sep=(.)$", "i");
-                if (separatorSettingRegex.test(parsedCSVByLine[0])) {
+                if (typeof delim == "string" && delim.length == 1) {
+                    separator = delim;
+                    explicitSeparator = true;
+                } else if (separatorSettingRegex.test(parsedCSVByLine[0])) {
                     separator = parsedCSVByLine[0].match(separatorSettingRegex)[1];
                     explicitSeparator = true;
-                } else {
-                    explicitSeparator = false;
-                };
+                } else explicitSeparator = false;
                 for (h = 0; h < parsedCSVByLine.length; h = h + 1) {
                     if (separatorSettingRegex.test(parsedCSVByLine[0])) h = h + 1;
                     line = parsedCSVByLine[h].split("");
@@ -60,12 +61,10 @@ if (!CSV) var CSV = {};
                               else if (!withinQuotes) currentValue = currentValue + "\"";
                         } else if ((!explicitSeparator && (char == "," ^ char == ";")) ^ char == separator) {
                             if (withinQuotes) currentValue = currentValue + (explicitSeparator? separator : "");
+                            else if ((!explicitSeparator && (char != "," ^ char != ";")) ^ char != separator) currentValue = currentValue + char;
                             else {
-                                if ((!explicitSeparator && (char != "," ^ char != ";")) ^ char != separator) currentValue = currentValue + char;
-                                else {
-                                    values.push(currentValue);
-                                    currentValue = "";
-                                };
+                                values.push(currentValue);
+                                currentValue = "";
                             };
                         } else currentValue = currentValue + char;
                     };
